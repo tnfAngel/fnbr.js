@@ -53,7 +53,7 @@
     "@sapphire/async-queue": "^1.5.2",
     "axios": "^1.6.7",
     "stanza": "^12.20.0",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.3"
