@@ -181,7 +181,6 @@ class XMPP extends Base {
       try {
         await this.client.partyLock.wait();
 
-        console.log('Group chat from', m.from, 'message:', m)
 
         const partyId = m.from.split('@')[0].replace('Party-', '');
         if (!this.client.party || this.client.party.id !== partyId) return;
@@ -192,6 +191,8 @@ class XMPP extends Base {
 
         const authorMember = this.client.party.members.get(authorId);
         if (!authorMember) return;
+
+        console.log('Group chat from', authorMember)
 
         const partyMessage = new PartyMessage(this.client, {
           content: m.body ?? '', author: authorMember, sentAt: new Date(), id: m.id as string, party: this.client.party,
