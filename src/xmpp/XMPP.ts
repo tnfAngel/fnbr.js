@@ -192,8 +192,6 @@ class XMPP extends Base {
         const authorMember = this.client.party.members.get(authorId);
         if (!authorMember) return;
 
-        console.log('Group chat from', authorMember.id)
-
         const partyMessage = new PartyMessage(this.client, {
           content: m.body ?? '', author: authorMember, sentAt: new Date(), id: m.id as string, party: this.client.party,
         });

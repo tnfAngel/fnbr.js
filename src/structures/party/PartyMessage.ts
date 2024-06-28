@@ -11,7 +11,7 @@ class PartyMessage extends BaseMessage {
   /**
    * The message's author
    */
-  public author!: PartyMember;
+  public author: PartyMember;
 
   /**
    * The message's party
@@ -25,6 +25,7 @@ class PartyMessage extends BaseMessage {
   constructor(client: Client, data: PartyMessageData) {
     super(client, data);
 
+    this.author = data.author;
     this.party = data.party;
   }
 
