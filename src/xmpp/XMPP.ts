@@ -181,6 +181,8 @@ class XMPP extends Base {
       try {
         await this.client.partyLock.wait();
 
+        console.log('Group chat from', m.from, 'message:', m)
+
         const partyId = m.from.split('@')[0].replace('Party-', '');
         if (!this.client.party || this.client.party.id !== partyId) return;
         if (m.body === 'Welcome! You created new Multi User Chat Room.') return;
