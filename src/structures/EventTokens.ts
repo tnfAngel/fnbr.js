@@ -54,10 +54,10 @@ class EventTokens extends Base {
             season = 'S9';
           }
 
-          const divisionNumber = parseInt(division.replace('Division', ''), 10);
+          const divisionNumber = parseInt(division!.replace('Division', ''), 10);
 
-          if (!this.arenaDivisionData[season.toLowerCase()] || this.arenaDivisionData[season.toLowerCase()] < divisionNumber) {
-            this.arenaDivisionData[season.toLowerCase()] = divisionNumber;
+          if (!this.arenaDivisionData[season!.toLowerCase()] || this.arenaDivisionData[season!.toLowerCase()]! < divisionNumber) {
+            this.arenaDivisionData[season!.toLowerCase()] = divisionNumber;
           }
         } break;
         case 'GroupIdentity':

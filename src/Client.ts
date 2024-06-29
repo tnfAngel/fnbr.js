@@ -212,15 +212,15 @@ class Client extends EventEmitter {
   }
 
   // Events
-  public on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
+  public override on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
     return super.on(event, listener);
   }
 
-  public once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
+  public override once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
     return super.once(event, listener);
   }
 
-  public emit<U extends keyof ClientEvents>(event: U, ...args: Parameters<ClientEvents[U]>): boolean {
+  public override emit<U extends keyof ClientEvents>(event: U, ...args: Parameters<ClientEvents[U]>): boolean {
     return super.emit(event, ...args);
   }
 

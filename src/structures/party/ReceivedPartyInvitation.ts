@@ -9,8 +9,8 @@ import type Friend from '../friend/Friend';
  * Represents a recieved party invitation
  */
 class ReceivedPartyInvitation extends BasePartyInvitation {
-  public sender!: Friend;
-  public receiver!: ClientUser;
+  public override sender!: Friend;
+  public override receiver!: ClientUser;
 
   /**
    * Accepts this invitation

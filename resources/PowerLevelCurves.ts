@@ -14,7 +14,7 @@ function mapCurveTables<T extends { [k: keyof any]: { Keys: CurveKey[] } }>(stru
 }
 
 export default Object.freeze({
-  homebaseRating: Object.freeze(new CurveTable(HomebaseRatingMapping[0].ExportValue.UIMonsterRating.Keys)),
-  baseItemRating: mapCurveTables(BaseItemRating[0].ExportValue),
-  survivorItemRating: mapCurveTables(SurvivorItemRating[0].ExportValue),
+  homebaseRating: Object.freeze(new CurveTable(HomebaseRatingMapping[0]!.ExportValue.UIMonsterRating.Keys)),
+  baseItemRating: mapCurveTables(BaseItemRating[0]!.ExportValue),
+  survivorItemRating: mapCurveTables(SurvivorItemRating[0]!.ExportValue),
 });

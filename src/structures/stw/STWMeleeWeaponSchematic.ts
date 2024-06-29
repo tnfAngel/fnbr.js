@@ -2,8 +2,8 @@ import STWWeaponSchematic from './STWWeaponSchematic';
 import type { STWSchematicMeleeSubType } from '../../../resources/structs';
 
 class STWMeleeWeaponSchematic extends STWWeaponSchematic {
-  public type!: 'melee';
-  public subType!: STWSchematicMeleeSubType;
+  public override type!: 'melee';
+  public override subType!: STWSchematicMeleeSubType;
 }
 
 export default STWMeleeWeaponSchematic;

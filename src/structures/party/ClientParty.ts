@@ -38,7 +38,7 @@ class ClientParty extends Party {
   /**
    * The party's meta
    */
-  public meta: ClientPartyMeta;
+  public override meta: ClientPartyMeta;
 
   /**
    * The hidden member ids
@@ -144,7 +144,7 @@ class ClientParty extends Party {
       }, AuthSessionStoreKey.Fortnite);
     } catch (e) {
       if (e instanceof EpicgamesAPIError && e.code === 'errors.com.epicgames.social.party.stale_revision') {
-        this.revision = parseInt(e.messageVars[1], 10);
+        this.revision = parseInt(e.messageVars[1]!, 10);
         this.patchQueue.shift();
         return this.sendPatch(updated);
       }
