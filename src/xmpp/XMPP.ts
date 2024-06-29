@@ -688,7 +688,7 @@ class XMPP extends Base {
   public waitForSentMessage(id: string, timeout = 1000) {
     return new Promise<Stanzas.Message | undefined>((res) => {
       // eslint-disable-next-line no-undef
-      let messageTimeout: NodeJS.Timeout;
+      let messageTimeout: any;
 
       const listener = (m: Stanzas.Message) => {
         if (m.id === id) {
