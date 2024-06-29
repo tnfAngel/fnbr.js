@@ -8,7 +8,7 @@ class SentFriendMessage extends BaseFriendMessage {
   /**
    * The message's author
    */
-  public author!: ClientUser;
+  public override author!: ClientUser;
 }
 
 export default SentFriendMessage;

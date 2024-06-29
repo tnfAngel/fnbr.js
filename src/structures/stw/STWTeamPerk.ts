@@ -19,7 +19,7 @@ class STWTeamPerk extends STWItem {
   constructor(client: Client, id: string, data: STWProfileItemData) {
     super(client, id, data);
 
-    [, this.teamPerkId] = data.templateId.split(':');
+    this.teamPerkId = data.templateId.split(':')[1]!;
   }
 }
 

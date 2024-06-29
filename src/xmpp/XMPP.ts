@@ -181,15 +181,14 @@ class XMPP extends Base {
       try {
         await this.client.partyLock.wait();
 
-
-        const partyId = m.from.split('@')[0].replace('Party-', '');
+        const partyId = m.from.split('@')[0]?.replace('Party-', '');
         if (!this.client.party || this.client.party.id !== partyId) return;
         if (m.body === 'Welcome! You created new Multi User Chat Room.') return;
 
         const [, authorId] = m.from.split(':');
         if (authorId === this.client.user.self!.id) return;
 
-        const authorMember = this.client.party.members.get(authorId);
+        const authorMember = this.client.party.members.get(authorId!);
         if (!authorMember) return;
 
         const partyMessage = new PartyMessage(this.client, {
@@ -205,7 +204,7 @@ class XMPP extends Base {
 
     this.connection!.on('chat', async (m) => {
       try {
-        const friend = await this.waitForFriend(m.from.split('@')[0]);
+        const friend = await this.waitForFriend(m.from.split('@')[0]!);
         if (!friend) return;
         const message = new ReceivedFriendMessage(this.client, {
           content: m.body || '', author: friend, id: m.id as string, sentAt: new Date(),
@@ -226,7 +225,7 @@ class XMPP extends Base {
         const friendId = p.from.split('@')[0];
         if (friendId === this.client.user.self!.id) return;
 
-        const friend = await this.waitForFriend(friendId);
+        const friend = await this.waitForFriend(friendId!);
         if (!friend) return;
 
         if (p.type === 'unavailable') {
@@ -242,7 +241,7 @@ class XMPP extends Base {
 
         const presence = JSON.parse(p.status);
 
-        const before = this.client.friend.list.get(friendId)?.presence;
+        const before = this.client.friend.list.get(friendId!)?.presence;
         const after = new FriendPresence(this.client, presence, friend, p.show || 'online', p.from);
         if ((this.client.config.cacheSettings.presences?.maxLifetime || 0) > 0) {
           friend.presence = after;
