@@ -8,7 +8,7 @@ on:
       - '*'
 jobs:
   docgen:
-    if: github.repository_owner  == 'fnbrjs'
+    if: github.repository_owner == 'fnbrjs'
     name: Documentation
     runs-on: ubuntu-latest
     steps:
