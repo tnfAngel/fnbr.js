@@ -53,13 +53,13 @@ class Client extends EventEmitter {
    * Timeouts set by {@link Client#setTimeout} that are still active
    */
   // eslint-disable-next-line no-undef
-  private timeouts: Set<NodeJS.Timeout>;
+  private timeouts: Set<any>;
 
   /**
    * Intervals set by {@link Client#setInterval} that are still active
    */
   // eslint-disable-next-line no-undef
-  private intervals: Set<NodeJS.Timeout>;
+  private intervals: Set<any>;
 
   /**
    * All client configuration options
@@ -456,7 +456,7 @@ class Client extends EventEmitter {
   ): Promise<Parameters<ClientEvents[U]>> {
     return new Promise<any>((res, rej) => {
       // eslint-disable-next-line no-undef
-      let rejectionTimeout: NodeJS.Timeout;
+      let rejectionTimeout: any;
 
       const handler = (...data: any) => {
         if (!filter || filter(...data)) {
@@ -497,7 +497,7 @@ class Client extends EventEmitter {
    * @param timeout Timeout to cancel
    */
   // eslint-disable-next-line no-undef
-  public clearTimeout(timeout: NodeJS.Timeout) {
+  public clearTimeout(timeout: any) {
     clearTimeout(timeout);
     this.timeouts.delete(timeout);
   }
@@ -520,7 +520,7 @@ class Client extends EventEmitter {
    * @param interval Interval to cancel
    */
   // eslint-disable-next-line no-undef
-  public clearInterval(interval: NodeJS.Timeout) {
+  public clearInterval(interval: any) {
     clearInterval(interval);
     this.intervals.delete(interval);
   }

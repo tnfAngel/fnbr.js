@@ -19,6 +19,10 @@ import User from '../user/User';
 import type Client from '../../Client';
 import type {
   STWFORTStats,
+  STWSchematicEvoType,
+  STWSchematicMeleeSubType,
+  STWSchematicRangedSubType,
+  STWSchematicTrapSubType,
   STWSurvivorSquads,
   UserData,
 } from '../../../resources/structs';
@@ -122,13 +126,25 @@ class STWProfile extends User {
         case 'Schematic':
           switch (parseSTWSchematicTemplateId(item.templateId).type) {
             case 'melee':
-              this.items.push(new STWMeleeWeaponSchematic(this.client, itemId, item as STWProfileSchematicData));
+              this.items.push(new STWMeleeWeaponSchematic(this.client, itemId, item as STWProfileSchematicData & {
+                type: 'melee';
+                subType: STWSchematicMeleeSubType;
+                evoType: STWSchematicEvoType;
+              }));
               break;
             case 'ranged':
-              this.items.push(new STWRangedWeaponSchematic(this.client, itemId, item as STWProfileSchematicData));
+              this.items.push(new STWRangedWeaponSchematic(this.client, itemId, item as STWProfileSchematicData & {
+                type: 'ranged';
+                subType: STWSchematicRangedSubType
+                evoType: STWSchematicEvoType;
+              }));
               break;
             case 'trap':
-              this.items.push(new STWTrapSchematic(this.client, itemId, item as STWProfileSchematicData));
+              this.items.push(new STWTrapSchematic(this.client, itemId, item as STWProfileSchematicData & {
+                type: 'trap';
+                subType: STWSchematicTrapSubType
+                evoType: never;
+              }));
               break;
             default:
               this.items.push(new STWSchematic(this.client, itemId, item as STWProfileSchematicData));

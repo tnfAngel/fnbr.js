@@ -51,7 +51,7 @@ class FortniteAuthSession extends AuthSession<AuthSessionType.Fortnite> {
   /**
    * The refresh timeout
    */
-  public refreshTimeout?: NodeJS.Timeout;
+  public refreshTimeout?: any;
   constructor(client: Client, data: FortniteAuthData, clientSecret: string) {
     super(client, data, clientSecret, AuthSessionType.Fortnite);
 
