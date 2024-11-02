@@ -655,11 +655,11 @@ class XMPP extends Base {
    */
   public sendStatus(status?: object | string, show?: Constants.PresenceShow, to?: string) {
     if (!status) {
-      this.connection!.sendPresence();
+      this.connection?.sendPresence();
       return;
     }
 
-    this.connection!.sendPresence({
+    this.connection?.sendPresence({
       status: JSON.stringify(typeof status === 'string' ? { Status: status } : status),
       to,
       show,

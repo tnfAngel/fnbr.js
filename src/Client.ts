@@ -771,7 +771,6 @@ class Client extends EventEmitter {
     }, newPrivacy.deleted);
 
     this.partyLock.unlock();
-    await this.party.chat.join();
     return undefined;
   }
 

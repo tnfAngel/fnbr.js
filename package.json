@@ -1,9 +1,12 @@
 {
-  "name": "fnbr",
-  "version": "4.0.0",
+  "name": "@fnlb-project/fnbr",
+  "version": "4.0.1",
   "description": "A library to interact with Epic Games' Fortnite HTTP and XMPP services",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+		"access": "public"
+	},
   "scripts": {
     "build": "node generateExports.js && npx tsc",
     "lint": "eslint src/**/*.ts resources/**/*.ts enums/**/*.ts",
