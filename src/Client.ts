@@ -48,7 +48,7 @@ import type {
 } from '../resources/structs';
 
 /**
- * Represets the main client
+ * Represents the main client
  */
 class Client extends EventEmitter {
   /**
@@ -189,7 +189,7 @@ class Client extends EventEmitter {
         checkEULA: true,
         killOtherTokens: true,
         createLauncherSession: false,
-        authClient: 'fortniteIOSGameClient',
+        authClient: 'fortniteAndroidGameClient',
         ...config.auth,
       },
       partyConfig: {

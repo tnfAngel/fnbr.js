@@ -1461,6 +1461,15 @@ export interface EOSAuthData extends AuthData {
   scope: string;
 }
 
+export interface EOSAuthData extends AuthData {
+  refresh_expires: number;
+  refresh_expires_at: string;
+  refresh_token: string;
+  application_id: string;
+  merged_accounts: string[];
+  scope: string;
+}
+
 export interface AuthSessionStore<K, V> extends Collection<K, V> {
   get(key: AuthSessionStoreKey.Fortnite): FortniteAuthSession | undefined;
   get(key: AuthSessionStoreKey.Launcher): LauncherAuthSession | undefined;
@@ -1473,7 +1482,13 @@ export interface AuthSessionStore<K, V> extends Collection<K, V> {
 /*                                    EOS CHAT                                    */
 /* ------------------------------------------------------------------------------ */
 
+/**
+ * Represents a chat message data
+ */
 export interface ChatMessagePayload {
+  /**
+   * The message body, should not be empty and not exceed the limit of 256 characters. Please note that emojis count as 2 characters.
+   */
   body: string;
 }
 
@@ -1513,7 +1528,7 @@ export interface EOSConnectChatNewMsgMessage extends BaseEOSConnectMessage {
     namespace: string;
     conversation: {
       conversationId: string;
-      type: string; // i.e. 'party
+      type: string; // i.e. 'party'
     };
     message: {
       body: string;
@@ -1557,4 +1572,3 @@ export type EOSConnectMessage =
   | EOSConnectChatNewMsgMessage
   | EOSConnectChatMemberLeftMessage
   | EOSConnectChatNewWhisperMessage;
-

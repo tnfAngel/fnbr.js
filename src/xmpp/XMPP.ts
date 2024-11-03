@@ -1,5 +1,7 @@
+/* eslint-disable max-len */
 import { createClient as createStanzaClient } from 'stanza';
 import crypto from 'crypto';
+import { deprecate } from 'util';
 import Base from '../Base';
 import Endpoints from '../../resources/Endpoints';
 import PartyMessage from '../structures/party/PartyMessage';
@@ -26,6 +28,8 @@ import XMPPConnectionTimeoutError from '../exceptions/XMPPConnectionTimeoutError
 import XMPPConnectionError from '../exceptions/XMPPConnectionError';
 import type { Stanzas, Agent, Constants } from 'stanza';
 import type Client from '../Client';
+
+const deprecationNotOverXmppAnymore = 'Chatting is not done over XMPP anymore, this function will be removed in a future version';
 
 /**
  * Represents the client's XMPP manager
@@ -674,11 +678,13 @@ class XMPP extends Base {
    * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async sendMessage(to: string, content: string, type: Constants.MessageType = 'chat') {
-    return this.waitForSentMessage(this.connection!.sendMessage({
+    const deprecatedFn = deprecate(async () => this.waitForSentMessage(this.connection!.sendMessage({
       to,
       body: content,
       type,
-    }));
+    })), deprecationNotOverXmppAnymore);
+
+    return deprecatedFn();
   }
 
   /**
@@ -688,7 +694,7 @@ class XMPP extends Base {
    * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public waitForSentMessage(id: string, timeout = 1000) {
-    return new Promise<Stanzas.Message | undefined>((res) => {
+    const deprecatedFn = deprecate(async () => new Promise<Stanzas.Message | undefined>((res) => {
       // eslint-disable-next-line no-undef
       let messageTimeout: any;
 
@@ -705,7 +711,9 @@ class XMPP extends Base {
         res(undefined);
         this.connection!.removeListener('message:sent', listener);
       }, timeout);
-    });
+    }), deprecationNotOverXmppAnymore);
+
+    return deprecatedFn();
   }
 
   /**
@@ -715,7 +723,9 @@ class XMPP extends Base {
    * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async joinMUC(jid: string, nick: string) {
-    return this.connection!.joinRoom(jid, nick);
+    const deprecatedFn = deprecate(async () => this.connection!.joinRoom(jid, nick), deprecationNotOverXmppAnymore);
+
+    return deprecatedFn();
   }
 
   /**
@@ -725,7 +735,9 @@ class XMPP extends Base {
    * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async leaveMUC(jid: string, nick: string) {
-    return this.connection!.leaveRoom(jid, nick);
+    const deprecatedFn = deprecate(async () => this.connection!.leaveRoom(jid, nick), deprecationNotOverXmppAnymore);
+
+    return deprecatedFn();
   }
 
   /**
@@ -734,7 +746,9 @@ class XMPP extends Base {
    * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async ban(jid: string, member: string) {
-    return this.connection!.ban(jid, `${member}@${Endpoints.EPIC_PROD_ENV}`);
+    const deprecatedFn = deprecate(async () => this.connection!.ban(jid, `${member}@${Endpoints.EPIC_PROD_ENV}`), deprecationNotOverXmppAnymore);
+
+    return deprecatedFn();
   }
 }
 
