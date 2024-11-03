@@ -234,7 +234,7 @@ class PartyMember extends User {
   /**
    * Converts this party member into an object
    */
-  public toObject(): PartyMemberData {
+  public override toObject(): PartyMemberData {
     return {
       id: this.id,
       account_id: this.id,

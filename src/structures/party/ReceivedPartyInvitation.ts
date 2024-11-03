@@ -4,13 +4,30 @@ import BasePartyInvitation from './BasePartyInvitation';
 import { AuthSessionStoreKey } from '../../../resources/enums';
 import type ClientUser from '../user/ClientUser';
 import type Friend from '../friend/Friend';
+import type Client from '../../Client';
+import type Party from './Party';
+import type ClientParty from './ClientParty';
 
 /**
  * Represents a recieved party invitation
  */
 class ReceivedPartyInvitation extends BasePartyInvitation {
-  public sender!: Friend;
-  public receiver!: ClientUser;
+  public override sender: Friend;
+  public override receiver: ClientUser;
+
+  /**
+   * @param client The main client
+   * @param party The party this invitation belongs to
+   * @param sender The friend (or the client user) who sent this invitation
+   * @param receiver The friend (or the client user) who received this invitation
+   * @param data The invitation data
+   */
+  constructor(client: Client, party: Party | ClientParty, sender: Friend, receiver: ClientUser, data: any) {
+    super(client, party, sender, receiver, data);
+
+    this.sender = sender;
+    this.receiver = receiver;
+  }
 
   /**
    * Accepts this invitation

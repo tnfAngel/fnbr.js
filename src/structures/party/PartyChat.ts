@@ -50,6 +50,11 @@ class PartyChat extends Base {
   public isConnected: boolean;
 
   /**
+   * Holds the account ids, which will not receive party messages anymore from the currently logged in user
+   */
+  public bannedAccountIds: Set<string>;
+
+  /**
    * @param client The main client
    * @param party The chat room's party
    */
@@ -61,6 +66,7 @@ class PartyChat extends Base {
     this.nick = '';
     this.jid = '';
     this.isConnected = true;
+    this.bannedAccountIds = new Set();
 
     this.party = party;
   }

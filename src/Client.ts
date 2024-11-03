@@ -55,13 +55,13 @@ class Client extends EventEmitter {
    * Timeouts set by {@link Client#setTimeout} that are still active
    */
   // eslint-disable-next-line no-undef
-  private timeouts: Set<NodeJS.Timeout>;
+  private timeouts: Set<any>;
 
   /**
    * Intervals set by {@link Client#setInterval} that are still active
    */
   // eslint-disable-next-line no-undef
-  private intervals: Set<NodeJS.Timeout>;
+  private intervals: Set<any>;
 
   /**
    * All client configuration options
@@ -228,15 +228,15 @@ class Client extends EventEmitter {
   }
 
   // Events
-  public on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
+  public override on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
     return super.on(event, listener);
   }
 
-  public once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
+  public override once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this {
     return super.once(event, listener);
   }
 
-  public emit<U extends keyof ClientEvents>(event: U, ...args: Parameters<ClientEvents[U]>): boolean {
+  public override emit<U extends keyof ClientEvents>(event: U, ...args: Parameters<ClientEvents[U]>): boolean {
     return super.emit(event, ...args);
   }
 
@@ -473,7 +473,7 @@ class Client extends EventEmitter {
   ): Promise<Parameters<ClientEvents[U]>> {
     return new Promise<any>((res, rej) => {
       // eslint-disable-next-line no-undef
-      let rejectionTimeout: NodeJS.Timeout;
+      let rejectionTimeout: any;
 
       const handler = (...data: any) => {
         if (!filter || filter(...data)) {
@@ -514,7 +514,7 @@ class Client extends EventEmitter {
    * @param timeout Timeout to cancel
    */
   // eslint-disable-next-line no-undef
-  public clearTimeout(timeout: NodeJS.Timeout) {
+  public clearTimeout(timeout: any) {
     clearTimeout(timeout);
     this.timeouts.delete(timeout);
   }
@@ -537,7 +537,7 @@ class Client extends EventEmitter {
    * @param interval Interval to cancel
    */
   // eslint-disable-next-line no-undef
-  public clearInterval(interval: NodeJS.Timeout) {
+  public clearInterval(interval: any) {
     clearInterval(interval);
     this.intervals.delete(interval);
   }

@@ -34,7 +34,7 @@ class ClientPartyMemberMeta extends PartyMemberMeta {
       'Default:CampaignHero_j': JSON.stringify({
         CampaignHero: {
           heroItemInstanceId: '',
-          heroType: `/Game/Athena/Heroes/${defaultCharacter.replace('CID', 'HID')}.${defaultCharacter.replace('CID', 'HID')}`,
+          heroType: `/Game/Athena/Heroes/${defaultCharacter?.replace('CID', 'HID')}.${defaultCharacter?.replace('CID', 'HID')}`,
         },
       }),
       'Default:PlatformData_j': JSON.stringify({

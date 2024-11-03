@@ -9,7 +9,7 @@ class FortniteClientCredentialsAuthSession extends AuthSession<AuthSessionType.F
   public isInternalClient: boolean;
   public productId: string;
   public applicationId: string;
-  public refreshTimeout?: NodeJS.Timeout;
+  public refreshTimeout?: any;
   constructor(client: Client, data: FortniteClientCredentialsAuthData, clientSecret: string) {
     super(client, data, clientSecret, AuthSessionType.FortniteClientCredentials);
 
