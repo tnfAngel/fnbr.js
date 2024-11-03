@@ -54,7 +54,7 @@ class Image extends Base {
     return res;
   }
 
-  public toString() {
+  public override toString() {
     return this.url;
   }
 }

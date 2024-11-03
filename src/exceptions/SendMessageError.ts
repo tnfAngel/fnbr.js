@@ -9,7 +9,7 @@ class SendMessageError extends Error {
   /**
    * The message related to this error
    */
-  public message: string;
+  public override message: string;
 
   /**
    * The message's type

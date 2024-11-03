@@ -13,7 +13,7 @@ class LauncherAuthSession extends AuthSession<AuthSessionType.Launcher> {
   public scope: string[];
   public refreshToken: string;
   public refreshTokenExpiresAt: Date;
-  public refreshTimeout?: NodeJS.Timeout;
+  public refreshTimeout?: any;
   constructor(client: Client, data: LauncherAuthData, clientSecret: string) {
     super(client, data, clientSecret, AuthSessionType.Launcher);
 

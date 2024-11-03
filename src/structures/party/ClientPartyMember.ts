@@ -21,7 +21,7 @@ class ClientPartyMember extends PartyMember {
   /**
    * The member's meta
    */
-  public meta: ClientPartyMemberMeta;
+  public override meta: ClientPartyMemberMeta;
 
   /**
    * @param party The party this member belongs to
@@ -61,7 +61,7 @@ class ClientPartyMember extends PartyMember {
       }, AuthSessionStoreKey.Fortnite);
     } catch (e) {
       if (e instanceof EpicgamesAPIError && e.code === 'errors.com.epicgames.social.party.stale_revision') {
-        this.revision = parseInt(e.messageVars[1], 10);
+        this.revision = parseInt(e.messageVars[1]!, 10);
         this.patchQueue.shift();
         return this.sendPatch(updated);
       }
