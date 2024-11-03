@@ -74,7 +74,7 @@ export const createPartyInvitation = (clientUserId: string, pingerId: string, da
   };
 
   if (memberMeta.Platform_j) {
-    meta.Platform_j = JSON.parse(memberMeta.Platform_j).Platform.platformStr;
+    meta['Platform_j'] = JSON.parse(memberMeta.Platform_j).Platform.platformStr;
   }
 
   if (memberMeta['urn:epic:member:dn_s']) meta['urn:epic:member:dn_s'] = memberMeta['urn:epic:member:dn_s'];
@@ -92,7 +92,7 @@ export const createPartyInvitation = (clientUserId: string, pingerId: string, da
 };
 
 export const parseBlurlStream = (stream: Buffer) => new Promise<any>((res) => {
-  zlib.inflate(stream.slice(8), (err, buffer) => {
+  zlib.inflate(stream.slice(8), (_err, buffer) => {
     const data = JSON.parse(buffer.toString());
     res(data);
   });
@@ -103,17 +103,17 @@ const parseM3U8FileLine = (line: string): [string, any] => {
 
   let output: any;
 
-  if (value.includes(',')) {
+  if (value!.includes(',')) {
     output = {};
 
     let store = '';
     let isString = false;
-    for (const char of value.split('')) {
+    for (const char of value!.split('')) {
       if (char === '"') {
         isString = !isString;
       } else if (char === ',' && !isString) {
         const [vK, vV] = store.split(/=(.+)/);
-        output[vK] = vV.replace(/(^"|"$)/g, '');
+        output[vK!] = vV!.replace(/(^"|"$)/g, '');
         store = '';
       } else {
         store += char;
@@ -123,7 +123,7 @@ const parseM3U8FileLine = (line: string): [string, any] => {
     output = value;
   }
 
-  return [key, output];
+  return [key!, output];
 };
 
 export const parseM3U8File = (data: string) => {
@@ -280,7 +280,7 @@ export const buildReplay = (replayData: ReplayData, addStats: boolean) => {
 
 export const parseSTWSurvivorTemplateId = (templateId: string) => {
   const id = templateId.split(':')[1];
-  const fields = id.split('_');
+  const fields = id!.split('_');
 
   let type: STWSurvivorType;
   const rawType = fields.shift();
@@ -343,7 +343,7 @@ export const calcSTWSurvivorLeadBonus = (managerSynergy: string, squadName: keyo
 
 export const parseSTWHeroTemplateId = (templateId: string) => {
   const id = templateId.split(':')[1];
-  const fields = id.split('_');
+  const fields = id!.split('_');
 
   fields.shift();
   const type = fields.shift() as STWHeroType;
@@ -373,7 +373,7 @@ export function parseSTWSchematicTemplateId(templateId: string): {
   name?: string;
 } {
   const id = templateId.split(':')[1];
-  const fields = id.split('_');
+  const fields = id!.split('_');
 
   let type: STWSchematicType;
   let subType: STWSchematicSubType | undefined;

@@ -74,7 +74,7 @@ class Stats extends Base {
           : this.getPlaylistStatsType(playlistId);
 
         if (playlistType !== 'other') {
-          const [parsedKey, parsedValue] = parseStatKey(statKey, data.stats[key]);
+          const [parsedKey, parsedValue] = parseStatKey(statKey, data.stats[key]!);
 
           const inputTypePlaylistStats = this.stats[inputType][playlistType];
           const inputTypeAllStats = this.stats[inputType].overall;
@@ -105,9 +105,9 @@ class Stats extends Base {
           }
         }
       } else if (/^s\d\d?_social_bp_level$/.test(key)) {
-        this.levelData[key.split('_')[0]] = {
-          level: Math.round(data.stats[key] / 100),
-          progress: data.stats[key] % 100,
+        this.levelData[key.split('_')[0]!] = {
+          level: Math.round(data.stats[key]! / 100),
+          progress: data.stats[key]! % 100,
         };
       }
     }

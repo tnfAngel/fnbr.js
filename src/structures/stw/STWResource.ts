@@ -29,7 +29,7 @@ class STWResource extends STWItem {
   constructor(client: Client, id: string, data: STWProfileResourceData) {
     super(client, id, data);
 
-    [, this.resourceId] = data.templateId.split(':');
+    this.resourceId = data.templateId.split(':')[1]!;
 
     this.isSeen = data.attributes.item_seen;
     this.isFavorite = data.attributes.favorite;

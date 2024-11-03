@@ -11,7 +11,7 @@ class PartyMessage extends BaseMessage {
   /**
    * The message's author
    */
-  public author!: PartyMember;
+  public override author: PartyMember;
 
   /**
    * The message's party
@@ -25,6 +25,7 @@ class PartyMessage extends BaseMessage {
   constructor(client: Client, data: PartyMessageData) {
     super(client, data);
 
+    this.author = data.author;
     this.party = data.party;
   }
 
@@ -34,7 +35,7 @@ class PartyMessage extends BaseMessage {
    * @throws {SendMessageError} The message failed to send
    */
   public reply(content: string) {
-    return this.party.chat.send(content);
+    return this.party?.chat.send(content);
   }
 }
 
