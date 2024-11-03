@@ -126,7 +126,7 @@ class PartyChat extends Base {
     * @deprecated since chat is not done over xmpp anymore, this function will do nothing and will be removed in a future version
     */
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
-  public async ban(member: string) {
+  public async ban() {
     const deprecatedFn = deprecate(() => { }, deprecationNotOverXmppAnymore);
 
     return deprecatedFn();
