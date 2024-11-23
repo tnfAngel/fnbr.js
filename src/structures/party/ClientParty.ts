@@ -266,7 +266,7 @@ class ClientParty extends Party {
    * @deprecated This feature has been deprecated since epic moved chatting away from xmpp
    */
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
-  public async chatBan(member: string) {
+  public async chatBan() {
     const deprecatedFn = deprecate(() => { }, deprecationNotOverXmppAnymore);
 
     return deprecatedFn();
