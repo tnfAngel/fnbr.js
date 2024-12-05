@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@discordjs/collection": "^2.0.0",
-    "@sapphire/async-queue": "^1.5.3",
+    "@sapphire/async-queue": "^1.5.5",
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.6",
     "stanza": "^12.18.0",
