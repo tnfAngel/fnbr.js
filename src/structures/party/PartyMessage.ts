@@ -35,7 +35,7 @@ class PartyMessage extends BaseMessage {
    * @throws {SendMessageError} The message failed to send
    */
   public reply(content: string) {
-    return this.party.chat.send(content);
+    return this.party?.chat.send(content);
   }
 }
 

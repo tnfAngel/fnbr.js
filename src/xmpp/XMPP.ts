@@ -661,11 +661,11 @@ class XMPP extends Base {
    */
   public sendStatus(status?: object | string, show?: Constants.PresenceShow, to?: string) {
     if (!status) {
-      this.connection!.sendPresence();
+      this.connection?.sendPresence();
       return;
     }
 
-    this.connection!.sendPresence({
+    this.connection?.sendPresence({
       status: JSON.stringify(typeof status === 'string' ? { Status: status } : status),
       to,
       show,
@@ -677,7 +677,7 @@ class XMPP extends Base {
    * @param to The message receiver's JID
    * @param content The message that will be sent
    * @param type The message type (eg "chat" or "groupchat")
-   * @deprecated this doesn't work anymore, since chat messages are handled via an rest api now see {@link Client#chat}. This function will be removed in a future version
+   * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async sendMessage(to: string, content: string, type: Constants.MessageType = 'chat') {
     const deprecatedFn = deprecate(async () => this.waitForSentMessage(this.connection!.sendMessage({
@@ -693,7 +693,7 @@ class XMPP extends Base {
    * Wait until a message is sent
    * @param id The message id
    * @param timeout How long to wait for the message
-   * @deprecated this doesn't work anymore, since chat messages are handled via an rest api now see {@link Client#chat}. This function will be removed in a future version
+   * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public waitForSentMessage(id: string, timeout = 1000) {
     const deprecatedFn = deprecate(async () => new Promise<Stanzas.Message | undefined>((res) => {
@@ -722,7 +722,7 @@ class XMPP extends Base {
    * Joins a multi user chat room (MUC)
    * @param jid The room's JID
    * @param nick The client's nickname
-   * @deprecated this doesn't work anymore, since chat messages are handled via an rest api now see {@link Client#chat}. This function will be removed in a future version
+   * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async joinMUC(jid: string, nick: string) {
     const deprecatedFn = deprecate(async () => this.connection!.joinRoom(jid, nick), deprecationNotOverXmppAnymore);
@@ -734,7 +734,7 @@ class XMPP extends Base {
    * Leaves a multi user chat room (MUC)
    * @param jid The room's JID
    * @param nick The client's nickname
-   * @deprecated this doesn't work anymore, since chat messages are handled via an rest api now see {@link Client#chat}. This function will be removed in a future version
+   * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async leaveMUC(jid: string, nick: string) {
     const deprecatedFn = deprecate(async () => this.connection!.leaveRoom(jid, nick), deprecationNotOverXmppAnymore);
@@ -745,7 +745,7 @@ class XMPP extends Base {
   /**
    * Bans a member from a multi user chat room
    * @param member The member that should be banned
-   * @deprecated this doesn't work anymore, since chat messages are handled via an rest api now see {@link Client#chat}. This function will be removed in a future version
+   * @deprecated this is useless now, since chat messages are handeled via an rest api now see {@link Client#chat}
    */
   public async ban(jid: string, member: string) {
     const deprecatedFn = deprecate(async () => this.connection!.ban(jid, `${member}@${Endpoints.EPIC_PROD_ENV}`), deprecationNotOverXmppAnymore);
