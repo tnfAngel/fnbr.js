@@ -34,6 +34,8 @@ import EpicgamesAPIError from './exceptions/EpicgamesAPIError';
 import UserManager from './managers/UserManager';
 import FriendManager from './managers/FriendManager';
 import STWManager from './managers/STWManager';
+import STOMP from './stomp/STOMP';
+import ChatManager from './managers/ChatManager';
 import type { PresenceShow } from 'stanza/Constants';
 import type {
   BlurlStreamData, CreativeIslandData,
@@ -46,7 +48,7 @@ import type {
 } from '../resources/structs';
 
 /**
- * Represets the main client
+ * Represents the main client
  */
 class Client extends EventEmitter {
   /**
@@ -102,6 +104,11 @@ class Client extends EventEmitter {
   public xmpp: XMPP;
 
   /**
+   * EOS Connect STOMP manager
+   */
+  public stomp: STOMP;
+
+  /**
    * Friend manager
    */
   public friend: FriendManager;
@@ -127,6 +134,11 @@ class Client extends EventEmitter {
   public stw: STWManager;
 
   /**
+   * EOS: Chat Manager
+   */
+  public chat: ChatManager;
+
+  /**
    * @param config The client's configuration options
    */
   constructor(config: ClientOptions = {}) {
@@ -148,6 +160,7 @@ class Client extends EventEmitter {
       forceNewParty: true,
       disablePartyService: false,
       connectToXMPP: true,
+      connectToSTOMP: true,
       fetchFriends: true,
       restRetryLimit: 1,
       handleRatelimits: true,
@@ -156,6 +169,9 @@ class Client extends EventEmitter {
       language: 'en',
       friendOnlineConnectionTimeout: 30000,
       friendOfflineTimeout: 300000,
+      eosDeploymentId: '62a9473a2dca46b29ccf17577fcf42d7',
+      xmppConnectionTimeout: 15000,
+      stompConnectionTimeout: 15000,
       ...config,
       cacheSettings: {
         ...config.cacheSettings,
@@ -175,7 +191,7 @@ class Client extends EventEmitter {
         checkEULA: true,
         killOtherTokens: true,
         createLauncherSession: false,
-        authClient: 'fortniteIOSGameClient',
+        authClient: 'fortniteAndroidGameClient',
         ...config.auth,
       },
       partyConfig: {
@@ -195,6 +211,7 @@ class Client extends EventEmitter {
     this.auth = new Auth(this);
     this.http = new Http(this);
     this.xmpp = new XMPP(this);
+    this.stomp = new STOMP(this);
 
     this.partyLock = new AsyncLock();
     this.cacheLock = new AsyncLock();
@@ -205,6 +222,7 @@ class Client extends EventEmitter {
     this.user = new UserManager(this);
 
     this.party = undefined;
+    this.chat = new ChatManager(this);
     this.tournaments = new TournamentManager(this);
     this.lastPartyMemberMeta = this.config.defaultPartyMemberMeta;
 
@@ -233,7 +251,6 @@ class Client extends EventEmitter {
    * A valid authentication method must be provided in the client's config.
    * By default, there will be a console prompt asking for an authorization code
    * @throws {EpicgamesAPIError}
-   * @throws {EpicgamesGraphQLError}
    */
   public async login() {
     await this.auth.authenticate();
@@ -243,7 +260,10 @@ class Client extends EventEmitter {
 
     this.cacheLock.lock();
     try {
-      if (this.config.connectToXMPP) await this.xmpp.connect();
+      await Promise.all([
+        this.config.connectToXMPP && this.xmpp.connect(),
+        this.config.connectToSTOMP && this.stomp.connect(),
+      ]);
       if (this.config.fetchFriends) await this.updateCaches();
     } finally {
       this.cacheLock.unlock();
@@ -534,7 +554,7 @@ class Client extends EventEmitter {
    * @param message Text to debug
    * @param type Debug type (regular, http or xmpp)
    */
-  public debug(message: string, type: 'regular' | 'http' | 'xmpp' = 'regular') {
+  public debug(message: string, type: 'regular' | 'http' | 'xmpp' | 'stomp' = 'regular') {
     switch (type) {
       case 'regular':
         if (typeof this.config.debug === 'function') this.config.debug(message);
@@ -544,6 +564,9 @@ class Client extends EventEmitter {
         break;
       case 'xmpp':
         if (typeof this.config.xmppDebug === 'function') { this.config.xmppDebug(message); }
+        break;
+      case 'stomp':
+        if (typeof this.config.stompDebug === 'function') { this.config.stompDebug(message); }
         break;
     }
   }
@@ -751,7 +774,6 @@ class Client extends EventEmitter {
     }, newPrivacy.deleted);
 
     this.partyLock.unlock();
-    await this.party.chat.join();
     return undefined;
   }
 
@@ -883,7 +905,7 @@ class Client extends EventEmitter {
       throw new Error('Request returned an empty body');
     }
 
-    return new EpicgamesServerStatus(this, epicgamesServerStatus.data);
+    return new EpicgamesServerStatus(this, epicgamesServerStatus);
   }
 
   /**
@@ -912,7 +934,7 @@ class Client extends EventEmitter {
       responseType: 'arraybuffer',
     });
 
-    const streamData: BlurlStreamData = await parseBlurlStream(blurlFile.data);
+    const streamData: BlurlStreamData = await parseBlurlStream(blurlFile);
 
     const streamMetaData = {
       subtitles: streamData.subtitles ? JSON.parse(streamData.subtitles) : {},
