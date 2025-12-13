@@ -1,6 +1,6 @@
 import Meta from '../../util/Meta';
 import type {
-  BannerMeta, BattlePassMeta, CosmeticsVariantMeta, Island, MatchMeta, PartyMemberSchema, Platform,
+  BannerMeta, BattlePassMeta, CosmeticsVariantMeta, PartyMemberIsland, MatchMeta, PartyMemberSchema, Platform,
 } from '../../../resources/structs';
 
 /**
@@ -25,7 +25,7 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
    * The current emote EID
    */
   public get emote(): string | undefined {
-    const emoteAsset: string = this.get('Default:FrontendEmote_j')?.FrontendEmote?.emoteItemDef;
+    const emoteAsset: string = this.get('Default:FrontendEmote_j')?.FrontendEmote?.pickable;
     if (emoteAsset === 'None' || !emoteAsset) return undefined;
     return emoteAsset.match(/(?<=\w*\.)\w*/)?.shift();
   }
@@ -120,8 +120,8 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
   /**
    * The current island info
    */
-  public get island(): Island {
-    return this.get('Default:CurrentIsland_j')?.SelectedIsland;
+  public get island(): PartyMemberIsland {
+    return JSON.parse(this.get('Default:MatchmakingInfo_j')?.MatchmakingInfo.currentIsland.island);
   }
 
   /**

@@ -86,7 +86,7 @@ export type DeviceAuthResolveable = DeviceAuth | PathLike | DeviceAuthFunction |
 
 export type AuthStringResolveable = string | PathLike | StringFunction | StringFunctionAsync;
 
-export type Platform = 'WIN' | 'MAC' | 'PSN' | 'XBL' | 'SWT' | 'IOS' | 'AND' | 'PS5' | 'XSX';
+export type Platform = 'WIN' | 'MAC' | 'PSN' | 'XBL' | 'SWT' | 'SWT2' | 'IOS' | 'AND' | 'PS5' | 'XSX';
 
 export type AuthClient = 'fortnitePCGameClient' | 'fortniteIOSGameClient' | 'fortniteAndroidGameClient'
 | 'fortniteSwitchGameClient' | 'fortniteCNGameClient' | 'launcherAppClient2' | 'Diesel - Dauntless';
@@ -1004,6 +1004,28 @@ export interface Island {
   };
 }
 
+export interface PartyMemberIsland {
+  LinkId: string;
+  MatchmakingSettingsV1: {
+    privacy: string;
+    productModes: any[];
+    regionId: string;
+    world: {
+      bIsJoinable: boolean;
+      iD: string;
+      name: string;
+      ownerId: string;
+    };
+  };
+  Session: {
+    iD: string;
+    joinInfo: {
+      joinablity: string;
+      sessionKey: string;
+    };
+  };
+}
+
 export interface Cosmetics {
   outfit?: { id: string; variants?: CosmeticVariant[]; enlightment?: CosmeticEnlightment };
   backpack?: { id: string; variants?: CosmeticVariant[]; path?: string };
@@ -1013,16 +1035,13 @@ export interface Cosmetics {
 
 export interface CosmeticVariant {
   channel: string;
+  channelIndex: number;
   variant: string;
-  dE?: number;
+  variantIndex: number;
 }
 
 export interface CosmeticVariantMeta {
-  i: {
-    v: string;
-    c: string;
-    dE: number;
-  }[];
+  i: string[];
 }
 
 export interface CosmeticsVariantMeta {

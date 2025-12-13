@@ -200,17 +200,30 @@ class ClientPartyMember extends PartyMember {
     } = cosmetics;
     const patches: Schema = {};
 
+    let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
+    let variantData = this.meta.get('Default:AthenaCosmeticLoadoutVariants_j');
+    let mpData = this.meta.get('Default:MpLoadout_j');
+
     if (outfit) {
-      let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
-      let variantData = this.meta.get('Default:AthenaCosmeticLoadoutVariants_j');
+      mpData = this.meta.set('Default:MpLoadout_j', {
+        ...mpData,
+        MpLoadout: {
+          ...mpData.MpLoadout,
+          d: JSON.stringify({
+            ...JSON.parse(mpData.MpLoadout.d),
+            ac: {
+              i: outfit.id,
+              v: outfit.variants?.map(() => 0) ?? [],
+            },
+          }),
+        },
+      });
+
+      patches['Default:MpLoadout_j'] = mpData;
 
       const parsedVariants: CosmeticsVariantMeta = {
         athenaCharacter: {
-          i: outfit.variants?.map((v) => ({
-            c: v.channel,
-            v: v.variant,
-            dE: v.dE || 0,
-          })) ?? [],
+          i: outfit.variants?.map((v) => `${v.channelIndex}|${v.variantIndex}`) ?? [],
         },
       };
 
@@ -233,12 +246,12 @@ class ClientPartyMember extends PartyMember {
 
       patches['Default:AthenaCosmeticLoadout_j'] = data;
 
-      delete variantData.AthenaCosmeticLoadoutVariants.vL.AthenaCharacter;
+      delete variantData.AthenaCosmeticLoadoutVariants.vD.athenaCharacter;
       if (parsedVariants.athenaCharacter?.i[0]) {
         variantData = this.meta.set('Default:AthenaCosmeticLoadoutVariants_j', {
           AthenaCosmeticLoadoutVariants: {
-            vL: {
-              ...variantData.AthenaCosmeticLoadoutVariants.vL,
+            vD: {
+              ...variantData.AthenaCosmeticLoadoutVariants.vD,
               ...parsedVariants,
             },
           },
@@ -249,9 +262,23 @@ class ClientPartyMember extends PartyMember {
     }
 
     if (Object.hasOwn(cosmetics, 'backpack')) {
-      if (!backpack) {
-        let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
+      mpData = this.meta.set('Default:MpLoadout_j', {
+        ...mpData,
+        MpLoadout: {
+          ...mpData.MpLoadout,
+          d: JSON.stringify({
+            ...JSON.parse(mpData.MpLoadout.d),
+            ab: backpack ? {
+              i: backpack.id,
+              v: backpack.variants?.map(() => 0) ?? [],
+            } : undefined,
+          }),
+        },
+      });
 
+      patches['Default:MpLoadout_j'] = mpData;
+
+      if (!backpack) {
         data = this.meta.set('Default:AthenaCosmeticLoadout_j', {
           ...data,
           AthenaCosmeticLoadout: {
@@ -262,16 +289,9 @@ class ClientPartyMember extends PartyMember {
 
         patches['Default:AthenaCosmeticLoadout_j'] = data;
       } else {
-        let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
-        let variantData = this.meta.get('Default:AthenaCosmeticLoadoutVariants_j');
-
         const parsedVariants: CosmeticsVariantMeta = {
           athenaBackpack: {
-            i: backpack.variants?.map((v) => ({
-              c: v.channel,
-              v: v.variant,
-              dE: v.dE || 0,
-            })) ?? [],
+            i: backpack.variants?.map((v) => `${v.channelIndex}|${v.variantIndex}`) ?? [],
           },
         };
 
@@ -285,12 +305,12 @@ class ClientPartyMember extends PartyMember {
 
         patches['Default:AthenaCosmeticLoadout_j'] = data;
 
-        delete variantData.AthenaCosmeticLoadoutVariants.vL.AthenaBackpack;
+        delete variantData.AthenaCosmeticLoadoutVariants.vD.athenaBackpack;
         if (parsedVariants.athenaBackpack?.i[0]) {
           variantData = this.meta.set('Default:AthenaCosmeticLoadoutVariants_j', {
             AthenaCosmeticLoadoutVariants: {
-              vL: {
-                ...variantData.AthenaCosmeticLoadoutVariants.vL,
+              vD: {
+                ...variantData.AthenaCosmeticLoadoutVariants.vD,
                 ...parsedVariants,
               },
             },
@@ -302,16 +322,9 @@ class ClientPartyMember extends PartyMember {
     }
 
     if (pickaxe) {
-      let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
-      let variantData = this.meta.get('Default:AthenaCosmeticLoadoutVariants_j');
-
       const parsedVariants: CosmeticsVariantMeta = {
         athenaPickaxe: {
-          i: pickaxe.variants?.map((v) => ({
-            c: v.channel,
-            v: v.variant,
-            dE: v.dE || 0,
-          })) ?? [],
+          i: pickaxe.variants?.map((v) => `${v.channelIndex}|${v.variantIndex}`) ?? [],
         },
       };
 
@@ -325,12 +338,12 @@ class ClientPartyMember extends PartyMember {
 
       patches['Default:AthenaCosmeticLoadout_j'] = data;
 
-      delete variantData.AthenaCosmeticLoadoutVariants.vL.AthenaPickaxe;
+      delete variantData.AthenaCosmeticLoadoutVariants.vD.AthenaPickaxe;
       if (parsedVariants.athenaPickaxe?.i[0]) {
         variantData = this.meta.set('Default:AthenaCosmeticLoadoutVariants_j', {
           AthenaCosmeticLoadoutVariants: {
-            vL: {
-              ...variantData.AthenaCosmeticLoadoutVariants.vL,
+            vD: {
+              ...variantData.AthenaCosmeticLoadoutVariants.vD,
               ...parsedVariants,
             },
           },
@@ -342,8 +355,6 @@ class ClientPartyMember extends PartyMember {
 
     if (Object.hasOwn(cosmetics, 'shoes')) {
       if (!shoes) {
-        let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
-
         data = this.meta.set('Default:AthenaCosmeticLoadout_j', {
           ...data,
           AthenaCosmeticLoadout: {
@@ -354,8 +365,6 @@ class ClientPartyMember extends PartyMember {
 
         patches['Default:AthenaCosmeticLoadout_j'] = data;
       } else {
-        let data = this.meta.get('Default:AthenaCosmeticLoadout_j');
-
         data = this.meta.set('Default:AthenaCosmeticLoadout_j', {
           ...data,
           AthenaCosmeticLoadout: {
@@ -455,14 +464,14 @@ class ClientPartyMember extends PartyMember {
    * @throws {EpicgamesAPIError}
    */
   public async setEmote(id: string, path?: string) {
-    if (this.meta.get('Default:FrontendEmote_j').FrontendEmote.emoteItemDef !== 'None') await this.clearEmote();
+    if (this.meta.get('Default:FrontendEmote_j').FrontendEmote.pickable !== 'None') await this.clearEmote();
 
     let data = this.meta.get('Default:FrontendEmote_j');
     data = this.meta.set('Default:FrontendEmote_j', {
       ...data,
       FrontendEmote: {
         ...data.FrontendEmote,
-        emoteItemDef: `${path?.replace(/\/$/, '') ?? '/BRCosmetics/Athena/Items/Cosmetics/Dances'}/${id}.${id}`,
+        pickable: `${path?.replace(/\/$/, '') ?? '/BRCosmetics/Athena/Items/Cosmetics/Dances'}/${id}.${id}`,
         emoteSection: -2,
       },
     });
@@ -493,7 +502,7 @@ class ClientPartyMember extends PartyMember {
       ...data,
       FrontendEmote: {
         ...data.FrontendEmote,
-        emoteItemDef: 'None',
+        pickable: 'None',
         emoteSection: -1,
       },
     });
