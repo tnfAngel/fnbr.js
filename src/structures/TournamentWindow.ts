@@ -1,7 +1,7 @@
 import type {
-  TournamentWindowBlackoutPeriod, TournamentWindowData, TournamentWindowMetadata, TournamentWindowScoreLocation,
-  TournamentWindowTemplateData, TournamentWindowTemplatePayoutTable, TournamentWindowTemplateScoringRule,
-  TournamentWindowTemplateTiebreakFormula,
+  TournamentWindowBlackoutPeriod, TournamentWindowData, TournamentWindowMetadata, TournamentWindowResolvedData,
+  TournamentWindowScoreLocation, TournamentWindowTemplateData, TournamentWindowTemplatePayoutTable,
+  TournamentWindowTemplateScoringRule, TournamentWindowTemplateTiebreakFormula,
 } from '../../resources/httpResponses';
 import type Tournament from './Tournament';
 
@@ -63,6 +63,20 @@ class TournamentWindow {
    * The score locations
    */
   public scoreLocations: TournamentWindowScoreLocation[];
+
+  /**
+   * The resolved window locations
+   */
+  public resolvedLocations: string[];
+
+  /**
+   * Leaderboard definitions with their payout tables
+   */
+  public leaderboardDefs: Array<{
+    leaderboardDefId: string;
+    payoutTableId?: string;
+    payoutTable?: TournamentWindowTemplatePayoutTable[];
+  }>;
 
   /**
    * The tournament window's visibility
@@ -144,7 +158,12 @@ class TournamentWindow {
    * @param windowData The tournament window's data
    * @param tournamentWindowTemplateData The tournament window's template data
    */
-  constructor(tournament: Tournament, windowData: TournamentWindowData, tournamentWindowTemplateData?: TournamentWindowTemplateData) {
+  constructor(
+    tournament: Tournament,
+    windowData: TournamentWindowData,
+    tournamentWindowTemplateData?: TournamentWindowTemplateData,
+    resolvedData?: TournamentWindowResolvedData[],
+  ) {
     Object.defineProperty(this, 'tournament', { value: tournament });
 
     // Window data
@@ -158,6 +177,19 @@ class TournamentWindow {
     this.isTBD = windowData.isTBD;
     this.canLiveSpectate = windowData.canLiveSpectate;
     this.scoreLocations = windowData.scoreLocations;
+
+    this.resolvedLocations = resolvedData?.[0]?.locations ?? [];
+    this.leaderboardDefs = [];
+    resolvedData?.forEach((data) => {
+      if (data.leaderboardDef) {
+        this.leaderboardDefs.push({
+          leaderboardDefId: data.leaderboardDef.leaderboardDefId,
+          payoutTableId: data.payoutTableId,
+          payoutTable: data.payoutTable,
+        });
+      }
+    });
+
     this.visibility = windowData.visibility;
     this.requireAllTokens = windowData.requireAllTokens;
     this.requireAnyTokens = windowData.requireAnyTokens;
