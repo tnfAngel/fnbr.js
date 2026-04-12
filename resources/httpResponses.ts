@@ -30,6 +30,16 @@ export interface EpicgamesOAuthData {
   device_id: string;
 }
 
+export interface PublicKeyData {
+  key: string;
+  account_id: string;
+  key_guid: string;
+  kid: string;
+  expiration: string;
+  jwt: string;
+  type: string;
+}
+
 export type PlatformMappings = {
   // eslint-disable-next-line no-unused-vars
   [key in FullPlatform]?: string;
@@ -40,9 +50,19 @@ export type RegionMappings = {
   [key in Region]?: string;
 };
 
+export interface TournamentsResponse {
+  events: TournamentData[];
+  templates: TournamentWindowTemplateData[];
+  resolvedWindowLocations?: Record<string, string[]>;
+  leaderboardDefs?: LeaderboardDef[];
+  payoutTables?: Record<string, TournamentWindowTemplatePayoutTable[]>;
+}
+
 export interface TournamentMetadata {
   minimumAccountLevel: number;
   pool: string;
+  tournamentType?: string;
+  webId?: string;
   AccountLockType: string;
   TeamLockType: string;
   DisqualifyType: string;
@@ -59,10 +79,21 @@ export interface TournamentWindowScoreLocation {
   scoreMode: string;
   scoreId: string;
   leaderboardId: string;
+  leaderboardDefId?: string;
+  isMainWindowLeaderboard?: boolean;
   useIndividualScores?: boolean;
 }
 
+export interface TournamentWindowResolvedData {
+  locations: string[];
+  leaderboardDef?: LeaderboardDef;
+  payoutTableId?: string;
+  payoutTable?: TournamentWindowTemplatePayoutTable[];
+}
+
 export interface TournamentWindowMetadata {
+  VisualRound: number;
+  hideScoreLocationsIndexes?: number[];
   RoundType: string;
   ThresholdToAdvanceDivision: number;
   divisionRank: number;
@@ -71,6 +102,27 @@ export interface TournamentWindowMetadata {
   SubgroupId: string;
   ScheduledMatchmakingMatchDelaySeconds?: number;
   liveSpectateAccessToken: string;
+}
+
+export interface LeaderboardDef {
+  gameId: string;
+  leaderboardDefId: string;
+  leaderboardStorageId: string;
+  leaderboardInstanceGroupingKeyFormat: string;
+  leaderboardInstanceIdFormat: string;
+  maxSessionHistorySize: number;
+  useIndividualScores: boolean;
+  tiebreakerFormula: any;
+  scoringRuleSetId: string;
+  clampsToZero: boolean;
+  payoutsConfig?: {
+    payoutTableIdFormat: string;
+    payoutDate: string;
+  };
+  hidePlayerScores: boolean;
+  percentileAccuracy: number;
+  requiredPlayerListings: any[];
+  discardZeroScore: boolean;
 }
 
 export interface TournamentWindowData {
@@ -126,6 +178,7 @@ export interface TournamentDisplayData {
   schedule_info: string;
   primary_color: string;
   flavor_description: string;
+  square_poster_image : string;
   poster_front_image: string;
   short_format_title: string;
   title_line_2: string;
@@ -137,6 +190,7 @@ export interface TournamentDisplayData {
   poster_fade_color: string;
   secondary_color: string;
   playlist_tile_image: string;
+  tournament_view_background_image: string;
   base_color: string;
   highlight_color: string;
   background_title: string;

@@ -20,13 +20,23 @@ export default Object.freeze({
   XMPP_SERVER: 'xmpp-service-prod.ol.epicgames.com',
   EPIC_PROD_ENV: 'prod.ol.epicgames.com',
 
+  // PUBLIC KEY
+  PUBLICKEY: 'https://publickey-service-prod.ecbc.live.use1a.on.epicgames.com/publickey',
+
+  // EOS
+  EOS_STOMP: 'connect.epicgames.dev',
+  EOS_TOKEN: 'https://api.epicgames.dev/epic/oauth/v2/token',
+  EOS_TOKEN_INFO: 'https://api.epicgames.dev/epic/oauth/v2/tokenInfo',
+  EOS_TOKEN_REVOKE: 'https://api.epicgames.dev/epic/oauth/v2/revoke',
+  EOS_CHAT: 'https://api.epicgames.dev/epic/chat',
+
   // BATTLE ROYALE
   BR_STATS_V2: 'https://statsproxy-public-service-live.ol.epicgames.com/statsproxy/api/statsv2',
   BR_SERVER_STATUS: 'https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api/service/bulk/status?serviceId=Fortnite',
   BR_STORE: 'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/storefront/v2/catalog',
   BR_STORE_KEYCHAIN: 'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/storefront/v2/keychain?numKeysDownloaded=0',
   BR_NEWS: 'https://fortnitecontent-website-prod07.ol.epicgames.com/content/api/pages/fortnite-game',
-  BR_NEWS_MOTD: 'https://prm-dialogue-public-api-prod.edea.live.use1a.on.epicgames.com/api/v1/fortnite-br/surfaces/motd/target',
+  BR_NEWS_MOTD: 'https://prm-dialogue-public-api-prod.edea.live.use1a.on.epicgames.com/api/v1/fortnite-br/channel/motd/target',
   BR_EVENT_FLAGS: 'https://fngw-mcp-gc-livefn.ol.epicgames.com/fortnite/api/calendar/v1/timeline',
   BR_SAC_SEARCH: 'https://payment-website-pci.ol.epicgames.com/affiliate/search-by-slug',
   BR_SAC: 'https://affiliate-public-service-prod.ol.epicgames.com/affiliate/api/public/affiliates/slug',

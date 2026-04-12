@@ -1,6 +1,6 @@
 <a href="https://fnbr.js.org"><img align="left" src="https://fnbr.js.org/static/logo-square.png" height=128 width=128 /></a>
 
-[![CI Status](https://github.com/fnbrjs/fnbr.js/actions/workflows/ci.yml/badge.svg)](https://github.com/fnbrjs/fnbr.js/actions/workflows/ci.yml)
+[![CI Status](https://github.com/fnbrjs/fnbr.js/actions/workflows/test.yaml/badge.svg)](https://github.com/fnbrjs/fnbr.js/actions/workflows/test.yaml)
 [![NPM Version](https://img.shields.io/npm/v/fnbr.svg)](https://npmjs.com/package/fnbr)
 [![NPM Downloads](https://img.shields.io/npm/dm/fnbr.svg)](https://npmjs.com/package/fnbr)
 [![MIT License](https://img.shields.io/npm/l/fnbr.svg)](https://github.com/fnbrjs/fnbr.js/blob/master/LICENSE)
@@ -47,7 +47,7 @@ client.login();
 <h2>License</h2>
 MIT License
 
-Copyright (c) 2020-2024 Nils S.
+Copyright (c) 2020-2025 Nils S.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

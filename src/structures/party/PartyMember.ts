@@ -94,6 +94,13 @@ class PartyMember extends User {
   }
 
   /**
+   * The member's currently equipped shoes
+   */
+  public get shoes() {
+    return this.meta.shoes;
+  }
+
+  /**
    * Whether the member is ready
    */
   public get isReady() {
@@ -119,13 +126,6 @@ class PartyMember extends User {
    */
   public get variants() {
     return this.meta.variants;
-  }
-
-  /**
-   * The member's custom data store
-   */
-  public get customDataStore() {
-    return this.meta.customDataStore;
   }
 
   /**

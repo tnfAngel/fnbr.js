@@ -1,6 +1,6 @@
 import Meta from '../../util/Meta';
 import type {
-  BannerMeta, BattlePassMeta, CosmeticsVariantMeta, Island, MatchMeta, PartyMemberSchema, Platform,
+  BannerMeta, BattlePassMeta, CosmeticsVariantMeta, PartyMemberIsland, MatchMeta, PartyMemberSchema, Platform,
 } from '../../../resources/structs';
 
 /**
@@ -8,24 +8,31 @@ import type {
  */
 class PartyMemberMeta extends Meta<PartyMemberSchema> {
   /**
+   * Internal helper to get the primary loadout slots object
+   */
+  private get loadoutSlots() {
+    return this.get('Default:MpLoadout1_j')?.MpLoadout1?.s || {};
+  }
+
+  /**
    * The currently equipped outfit CID
    */
   public get outfit(): string | undefined {
-    return (this.get('Default:AthenaCosmeticLoadout_j')?.AthenaCosmeticLoadout?.characterPrimaryAssetId as string)?.replace('AthenaCharacter:', '');
+    return this.loadoutSlots?.ac?.i;
   }
 
   /**
    * The currently equipped pickaxe ID
    */
   public get pickaxe(): string | undefined {
-    return (this.get('Default:AthenaCosmeticLoadout_j')?.AthenaCosmeticLoadout?.pickaxeDef as string)?.match(/(?<=\w*\.)\w*/)?.shift();
+    return this.loadoutSlots?.ap?.i;
   }
 
   /**
    * The current emote EID
    */
   public get emote(): string | undefined {
-    const emoteAsset: string = this.get('Default:FrontendEmote_j')?.FrontendEmote?.emoteItemDef;
+    const emoteAsset: string = this.get('Default:FrontendEmote_j')?.FrontendEmote?.pickable;
     if (emoteAsset === 'None' || !emoteAsset) return undefined;
     return emoteAsset.match(/(?<=\w*\.)\w*/)?.shift();
   }
@@ -34,21 +41,28 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
    * The currently equipped backpack BID
    */
   public get backpack(): string | undefined {
-    return (this.get('Default:AthenaCosmeticLoadout_j')?.AthenaCosmeticLoadout?.backpackDef as string)?.match(/(?<=\w*\.)\w*/)?.shift();
+    return this.loadoutSlots?.ab?.i;
+  }
+
+  /**
+   * The currently equipped shoes
+   */
+  public get shoes(): string | undefined {
+    return this.loadoutSlots?.as?.i;
   }
 
   /**
    * Whether the member is ready
    */
   public get isReady() {
-    return this.get('Default:LobbyState_j')?.LobbyState?.gameReadiness === 'Ready';
+    return this.get('Default:LobbyState_j')?.LobbyState?.inGameReadyCheckStatus === 'Ready';
   }
 
   /**
    * Whether the member is sitting out
    */
   public get isSittingOut() {
-    return this.get('Default:LobbyState_j')?.LobbyState?.gameReadiness === 'SittingOut';
+    return this.get('Default:LobbyState_j')?.LobbyState?.inGameReadyCheckStatus === 'SittingOut';
   }
 
   /**
@@ -62,28 +76,39 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
    * The cosmetic variants
    */
   public get variants(): CosmeticsVariantMeta {
-    return this.get('Default:AthenaCosmeticLoadoutVariants_j')?.AthenaCosmeticLoadoutVariants?.vL || {};
-  }
+    const slots = this.loadoutSlots;
 
-  /**
-   * The custom data store
-   */
-  public get customDataStore(): string[] {
-    return this.get('Default:ArbitraryCustomDataStore_j')?.ArbitraryCustomDataStore || [];
+    return {
+      athenaCharacter: slots.ac?.v ? { i: slots.ac.v.map((v: string | number) => `${v}`) } : undefined,
+      athenaBackpack: slots.ab?.v ? { i: slots.ab.v.map((v: string | number) => `${v}`) } : undefined,
+      athenaPickaxe: slots.ap?.v ? { i: slots.ap.v.map((v: string | number) => `${v}`) } : undefined,
+    };
   }
 
   /**
    * The banner info
    */
   public get banner(): BannerMeta | undefined {
-    return this.get('Default:AthenaBannerInfo_j')?.AthenaBannerInfo;
+    const slots = this.loadoutSlots;
+    if (!slots.li?.i && !slots.lc?.i) return undefined;
+
+    return {
+      bannerIconId: slots.li?.i,
+      bannerColorId: slots.lc?.i,
+    };
   }
 
   /**
    * The battle pass info
    */
   public get battlepass(): BattlePassMeta | undefined {
-    return this.get('Default:BattlePassInfo_j')?.BattlePassInfo;
+    const info = this.get('Default:BattlePassInfo_j')?.BattlePassInfo;
+    if (!info) return undefined;
+
+    return {
+      bHasPurchasedPass: !!info.bHasPurchasedPass,
+      passLevel: info.passLevel || 0,
+    };
   }
 
   /**
@@ -113,8 +138,10 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
   /**
    * The current island info
    */
-  public get island(): Island {
-    return this.get('Default:CurrentIsland_j')?.SelectedIsland;
+  public get island(): PartyMemberIsland {
+    const island = this.get('Default:MatchmakingInfo_j')?.MatchmakingInfo?.currentIsland?.island;
+    if (typeof island === 'string') return JSON.parse(island);
+    return island;
   }
 
   /**
@@ -138,7 +165,7 @@ class PartyMemberMeta extends Meta<PartyMemberSchema> {
    * Whether the member owns Save The World
    */
   public get hasPurchasedSTW() {
-    return !!this.get('Default:PackedState_j').PackedState?.hasPurchasedSTW;
+    return !!this.get('Default:PackedState_j')?.PackedState?.hasPurchasedSTW;
   }
 }
 
